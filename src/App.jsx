@@ -1,34 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { ChakraProvider, Heading, Button, ButtonGroup, Text, Box } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { decremented, incremented } from './redux/counter.js';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const count = useSelector((state) => state.counter.count);
+  const dispatch = useDispatch();
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    <ChakraProvider>
+      <Box height={'100vh'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+        <Box padding={'5'} display={'flex'} flexDir={'column'} gap={'3'} textAlign={'center'} maxW={'xl'} bgColor={'gray.100'} borderRadius={'2xl'} mx={'auto'}>
+          <Heading>React Counter</Heading>
+          <ButtonGroup mx={'auto'}>
+            <Button
+              textTransform={'uppercase'}
+              fontWeight={'bold'}
+              onClick={() => {
+                dispatch(decremented());
+              }}
+            >
+              decrement
+            </Button>
+            <Button
+              textTransform={'uppercase'}
+              fontWeight={'bold'}
+              onClick={() => {
+                dispatch(incremented());
+              }}
+            >
+              increment
+            </Button>
+          </ButtonGroup>
+          <Text>Count : {count}</Text>
+        </Box>
+      </Box>
+    </ChakraProvider>
+  );
 }
 
-export default App
+export default App;
