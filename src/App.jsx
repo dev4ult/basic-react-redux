@@ -13,7 +13,7 @@ function App() {
 
   // async function handleFetch() {
   //   try {
-  //     const data = await axios(`http://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
+  //     const data = await axios(`https://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
   //     console.log(data);
   //     setLoading(false);
   //     setError(null);
@@ -28,7 +28,7 @@ function App() {
   async function handleFetch() {
     try {
       dispatch({ type: ACTIONS.FETCH });
-      const data = await axios(`http://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
+      const data = await axios(`https://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
       console.log(data);
       dispatch({ type: ACTIONS.SUCCESS, payload: { data } });
     } catch (err) {
