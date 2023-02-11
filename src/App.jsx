@@ -1,9 +1,19 @@
 import { Button, Text, Box, Container } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useReducer, useState } from 'react';
+
+// useState hook
+// import { useState } from 'react';
+
+// useReducer hook
+// import { useReducer } from 'react';
+// import fetchReducer from './features/fetch/useReducerHook';
+// import ACTIONS from './features/fetch/actions';
+// import initialState from './features/fetch/initialState';
+
+// React Redux | Toolkit
 import { useDispatch, useSelector } from 'react-redux';
-import fetchReducer, { initialState, ACTIONS } from './features/fetch/useReducerHook';
+import fetchSlice, { start, success, failed, selectData, getWeather } from './features/fetch/reactRedux';
 
 function App() {
   // useState hook from react
@@ -23,24 +33,28 @@ function App() {
   //   }
   // }
 
-  const [state, dispatch] = useReducer(fetchReducer, initialState);
+  // const [state, dispatch] = useReducer(fetchReducer, initialState);
 
-  async function handleFetch() {
-    try {
-      dispatch({ type: ACTIONS.FETCH });
-      const data = await axios(`https://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
-      console.log(data);
-      dispatch({ type: ACTIONS.SUCCESS, payload: { data } });
-    } catch (err) {
-      dispatch({ type: ACTIONS.ERROR, payload: { error: err.message } });
-    }
-  }
+  // async function handleFetch() {
+  //   try {
+  //     dispatch({ type: ACTIONS.FETCH });
+  //     const data = await axios(`https://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
+  //     console.log(data);
+  //     dispatch({ type: ACTIONS.SUCCESS, payload: { data } });
+  //   } catch (err) {
+  //     dispatch({ type: ACTIONS.ERROR, payload: { error: err.message } });
+  //   }
+  // }
 
   // redux toolkit
-  // const count = useSelector((state) => state.counter.count);
-  // const dispatch = useDispatch();
+  const { weatherList, loading, error } = useSelector(selectData);
+  const dispatch = useDispatch();
 
-  // async function handleFetch() {}
+  function handleFetch() {
+    dispatch(getWeather());
+  }
+
+  console.log(weatherList);
 
   return (
     <>
@@ -49,7 +63,9 @@ function App() {
           <FetchButton type="button" onClick={handleFetch}>
             fetch
           </FetchButton>
-          {state.loading ? <Text>Fetching Weather Data ...</Text> : <Text>{state.error ? 'Something went wrong' : 'Check your browser console, click the button if data has not been sent'}</Text>}
+
+          {/* dont forget to change code below if you want to try for another state management */}
+          {loading ? <Text>Fetching Weather Data ...</Text> : <Text>{error ? 'Something went wrong' : 'Check your browser console, click the button if data has not been sent'}</Text>}
         </Card>
       </ContainerScreen>
     </>

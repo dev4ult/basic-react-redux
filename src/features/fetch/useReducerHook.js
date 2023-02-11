@@ -1,16 +1,5 @@
-const ACTIONS = {
-  FETCH: 'fetch',
-  SUCCESS: 'success',
-  ERROR: 'error',
-};
-
-const initialState = {
-  weatherList: {},
-  loading: false,
-  error: null,
-};
-
-export { ACTIONS, initialState };
+import ACTIONS from './actions';
+import initialState from './initialState';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -28,8 +17,8 @@ const reducer = (state = initialState, action) => {
     case ACTIONS.ERROR:
       return {
         ...state,
-        loading: false,
         error: action.payload.error,
+        loading: false,
       };
     default:
       return state;
