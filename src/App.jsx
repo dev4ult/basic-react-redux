@@ -1,30 +1,46 @@
-import { Button, ButtonGroup, Text, Box, Container, Flex } from '@chakra-ui/react';
+import { Button, Text, Box, Container } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { decremented, incremented } from './features/fetch/counter.js';
+import fetchReducer, { initialState, ACTIONS } from './features/fetch/useReducerHook';
 
 function App() {
-  const count = useSelector((state) => state.counter.count);
-  const dispatch = useDispatch();
+  // useState hook from react
+  // const [weatherList, setWeatherList] = useState({});
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
 
-  const [weatherList, setWeatherList] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // async function handleFetch() {
+  //   try {
+  //     const data = await axios(`http://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
+  //     console.log(data);
+  //     setLoading(false);
+  //     setError(null);
+  //   } catch (err) {
+  //     setError(err.message);
+  //     setLoading(false);
+  //   }
+  // }
+
+  const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   async function handleFetch() {
     try {
-      setLoading(true);
+      dispatch({ type: ACTIONS.FETCH });
       const data = await axios(`http://api.timezonedb.com/v2.1/list-time-zone?key=${import.meta.env.VITE_API_KEY}&format=json`);
       console.log(data);
-      setLoading(false);
-      setError(null);
+      dispatch({ type: ACTIONS.SUCCESS, payload: { data } });
     } catch (err) {
-      setError(err.message);
-      setLoading(false);
+      dispatch({ type: ACTIONS.ERROR, payload: { error: err.message } });
     }
   }
+
+  // redux toolkit
+  // const count = useSelector((state) => state.counter.count);
+  // const dispatch = useDispatch();
+
+  // async function handleFetch() {}
 
   return (
     <>
@@ -33,7 +49,7 @@ function App() {
           <FetchButton type="button" onClick={handleFetch}>
             fetch
           </FetchButton>
-          {loading ? <h2>Fetching Weather Data ...</h2> : <h2>{error ? 'Something went wrong' : 'Check your browser console, click the button if data has not been sent'}</h2>}
+          {state.loading ? <Text>Fetching Weather Data ...</Text> : <Text>{state.error ? 'Something went wrong' : 'Check your browser console, click the button if data has not been sent'}</Text>}
         </Card>
       </ContainerScreen>
     </>

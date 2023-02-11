@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/fetch/counter.js';
+// import { configureStore } from '@reduxjs/toolkit';
+// import counterReducer from '../features/fetch/counter.js';
 
-export default configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
-});
+// export default configureStore({
+//   reducer: {
+//     counter: counterReducer,
+//   },
+// });
