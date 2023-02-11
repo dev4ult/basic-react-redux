@@ -1,4 +1,5 @@
-import { ChakraProvider, Heading, Button, ButtonGroup, Text, Box } from '@chakra-ui/react';
+import { Button, ButtonGroup, Text, Box, Container } from '@chakra-ui/react';
+import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { decremented, incremented } from './redux/counter.js';
 
@@ -7,35 +8,45 @@ function App() {
   const dispatch = useDispatch();
 
   return (
-    <ChakraProvider>
-      <Box height={'100vh'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-        <Box padding={'5'} display={'flex'} flexDir={'column'} gap={'3'} textAlign={'center'} maxW={'xl'} bgColor={'gray.100'} borderRadius={'2xl'} mx={'auto'}>
-          <Heading>React Counter</Heading>
-          <ButtonGroup mx={'auto'}>
-            <Button
-              textTransform={'uppercase'}
-              fontWeight={'bold'}
+    <>
+      <Container height="100vh" display="flex" justifyContent="center" alignItems="center">
+        <Card maxW="xl" shadow="md" borderRadius="md">
+          <Text fontSize="xl">React Counter</Text>
+          <ButtonGroup mx="auto">
+            <StyledButton
               onClick={() => {
                 dispatch(decremented());
               }}
             >
               decrement
-            </Button>
-            <Button
-              textTransform={'uppercase'}
-              fontWeight={'bold'}
+            </StyledButton>
+            <StyledButton
               onClick={() => {
                 dispatch(incremented());
               }}
             >
               increment
-            </Button>
+            </StyledButton>
           </ButtonGroup>
-          <Text>Count : {count}</Text>
-        </Box>
-      </Box>
-    </ChakraProvider>
+          <Text fontWeight="bold">Count : {count}</Text>
+        </Card>
+      </Container>
+    </>
   );
 }
+
+const Card = styled(Box)`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-inline: auto;
+  text-align: center;
+`;
+
+const StyledButton = styled(Button)`
+  font-weight: semibold;
+  text-transform: uppercase;
+`;
 
 export default App;
